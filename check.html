@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>출석체크</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .month {
+            margin-bottom: 20px;
+        }
+        .month h2 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            padding: 10px;
+        }
+        .days div {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .days div.attended {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .days div:hover:not(.disabled) {
+            background-color: #ddd;
+        }
+        .days div.disabled {
+            cursor: not-allowed;
+            background-color: #ccc;
+            color: #777;
+        }
+        .navigation {
+            margin-top: 20px;
+        }
+        .navigation button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .navigation button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+        #attendance-count {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="month">
+            <h2 id="month-name">August</h2>
+            <div class="days" id="days-container">
+                <!-- 날짜가 여기 추가됨 -->
+            </div>
+            <div id="attendance-count">출석 일수: 0일</div>
+        </div>
+
+        <!-- 월 네비게이션 -->
+        <div class="navigation">
+            <button id="prev-btn" onclick="prevMonth()">이전 달</button>
+            <button id="next-btn" onclick="nextMonth()">다음 달</button>
+        </div>
+    </div>
+
+    <script>
+        const months = [
+            { name: "January", days: 31 },
+            { name: "February", days: 28 },
+            { name: "March", days: 31 },
+            { name: "April", days: 30 },
+            { name: "May", days: 31 },
+            { name: "June", days: 30 },
+            { name: "July", days: 31 },
+            { name: "August", days: 31 },
+            { name: "September", days: 30 },
+            { name: "October", days: 31 },
+            { name: "November", days: 30 },
+            { name: "December", days: 31 },
+        ];
+
+        const today = new Date();
+        const currentMonth = today.getMonth(); // 현재 월 (0~11)
+        const currentDay = today.getDate(); // 현재 날짜 (1~31)
+        let displayedMonth = currentMonth;
+        let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || Array(12).fill([]).map(() => []);
+
+        function createCalendar(monthIndex) {
+            const container = document.getElementById('days-container');
+            container.innerHTML = ''; // 이전 달의 날짜 초기화
+            const days = months[monthIndex].days;
+            const monthAttendance = attendanceData[monthIndex];
+
+            for (let i = 1; i <= days; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.textContent = i;
+                const isToday = monthIndex === currentMonth && i === currentDay;
+
+                // 지난 달, 현재 달의 지난 날짜 비활성화, 미래의 날짜 비활성화
+                if (monthIndex < currentMonth || (monthIndex === currentMonth && i < currentDay)) {
+                    dayElement.classList.add('disabled');
+                } else if (monthIndex > currentMonth || (monthIndex === currentMonth && i > currentDay)) {
+                    dayElement.classList.add('disabled');
+                } else if (monthIndex === currentMonth && i === currentDay) {
+                    dayElement.addEventListener('click', function() {
+                        this.classList.toggle('attended');
+                        toggleAttendance(monthIndex, i);
+                    });
+                }
+
+                if (monthAttendance.includes(i)) {
+                    dayElement.classList.add('attended');
+                }
+
+                container.appendChild(dayElement);
+            }
+            document.getElementById('month-name').textContent = months[monthIndex].name;
+            updateAttendanceCount(monthIndex);
+            updateNavigationButtons();
+        }
+
+        function toggleAttendance(monthIndex, day) {
+            const monthAttendance = attendanceData[monthIndex];
+            if (monthAttendance.includes(day)) {
+                attendanceData[monthIndex] = monthAttendance.filter(d => d !== day);
+            } else {
+                attendanceData[monthIndex].push(day);
+            }
+            localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
+            updateAttendanceCount(monthIndex);
+        }
+
+        function updateAttendanceCount(monthIndex) {
+            const attendedDays = attendanceData[monthIndex].length;
+            document.getElementById('attendance-count').textContent = `출석 일수: ${attendedDays}일`;
+        }
+
+        function updateNavigationButtons() {
+            document.getElementById('prev-btn').disabled = displayedMonth === 0;
+            document.getElementById('next-btn').disabled = displayedMonth === 11;
+        }
+
+        function prevMonth() {
+            if (displayedMonth > 0) {
+                displayedMonth--;
+                createCalendar(displayedMonth);
+            }
+        }
+
+        function nextMonth() {
+            if (displayedMonth < 11) {
+                displayedMonth++;
+                createCalendar(displayedMonth);
+            }
+        }
+
+        // 초기 달력 생성
+        createCalendar(displayedMonth);
+    </script>
+</body>
+</html>
