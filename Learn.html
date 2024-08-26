@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>단어 학습 페이지</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+<style>
+    body { text-align: center; }
+    #wordList { margin: 20px; }
+    #wordList li { margin: 5px; }
+</style>
+<main>
+    <h1>단어 학습 페이지</h1>
+    <input type="text" id="wordInput" placeholder="영어 단어">
+    <input type="text" id="meaningInput" placeholder="단어 뜻">
+    <button id="addWordBtn">단어 추가</button>
+    <h2>오늘의 학습 단어</h2>
+    <ul id="wordList"></ul>
+    <button id="startTestBtn">단어 시험 시작</button>
+</main>
+
+<script>
+    const wordList = document.getElementById('wordList');
+    const wordInput = document.getElementById('wordInput');
+    const meaningInput = document.getElementById('meaningInput');
+    const addWordBtn = document.getElementById('addWordBtn');
+    const startTestBtn = document.getElementById('startTestBtn');
+
+    let learnedWords = JSON.parse(localStorage.getItem('learnedWords')) || [];
+
+    function updateWordList() {
+        wordList.innerHTML = '';
+        learnedWords.forEach((word, index) => {
+            const li = document.createElement('li');
+            li.textContent = `${word.word} - ${word.meaning} `;
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = '삭제';
+            removeBtn.onclick = () => {
+                learnedWords.splice(index, 1);
+                localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+                updateWordList();
+            };
+            li.appendChild(removeBtn);
+            wordList.appendChild(li);
+        });
+    }
+
+    addWordBtn.onclick = () => {
+        const word = wordInput.value.trim();
+        const meaning = meaningInput.value.trim();
+        if (word && meaning) {
+            learnedWords.push({ word, meaning });
+            localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+            updateWordList();
+            wordInput.value = '';
+            meaningInput.value = '';
+        }
+    };
+
+    startTestBtn.onclick = () => {
+        if (learnedWords.length > 0) {
+            window.location.href = 'Examination.html';
+        } else {
+            alert('학습한 단어가 없습니다.');
+        }
+    };
+
+    updateWordList();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

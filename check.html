@@ -46,8 +46,9 @@
             background-color: #4CAF50;
             color: white;
         }
-        .days div:hover:not(.disabled) {
-            background-color: #ddd;
+        .days div.today {
+            background-color: #87CEEB;
+            color: white;
         }
         .days div.disabled {
             cursor: not-allowed;
@@ -114,7 +115,7 @@
         const currentMonth = today.getMonth(); // 현재 월 (0~11)
         const currentDay = today.getDate(); // 현재 날짜 (1~31)
         let displayedMonth = currentMonth;
-        let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || Array(12).fill([]).map(() => []);
+        let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || Array(12).fill(null).map(() => []);
 
         function createCalendar(monthIndex) {
             const container = document.getElementById('days-container');
@@ -125,22 +126,21 @@
             for (let i = 1; i <= days; i++) {
                 const dayElement = document.createElement('div');
                 dayElement.textContent = i;
-                const isToday = monthIndex === currentMonth && i === currentDay;
-
-                // 지난 달, 현재 달의 지난 날짜 비활성화, 미래의 날짜 비활성화
-                if (monthIndex < currentMonth || (monthIndex === currentMonth && i < currentDay)) {
-                    dayElement.classList.add('disabled');
-                } else if (monthIndex > currentMonth || (monthIndex === currentMonth && i > currentDay)) {
-                    dayElement.classList.add('disabled');
-                } else if (monthIndex === currentMonth && i === currentDay) {
-                    dayElement.addEventListener('click', function() {
-                        this.classList.toggle('attended');
-                        toggleAttendance(monthIndex, i);
-                    });
-                }
 
                 if (monthAttendance.includes(i)) {
                     dayElement.classList.add('attended');
+                }
+
+                if (monthIndex === currentMonth && i === currentDay) {
+                    dayElement.classList.add('today');
+                    dayElement.addEventListener('click', function() {
+                        this.classList.add('attended');
+                        markAttendance(monthIndex, i);
+                    });
+                } else if (monthIndex < currentMonth || (monthIndex === currentMonth && i < currentDay)) {
+                    dayElement.classList.add('disabled');
+                } else {
+                    dayElement.classList.add('disabled');
                 }
 
                 container.appendChild(dayElement);
@@ -150,15 +150,13 @@
             updateNavigationButtons();
         }
 
-        function toggleAttendance(monthIndex, day) {
+        function markAttendance(monthIndex, day) {
             const monthAttendance = attendanceData[monthIndex];
-            if (monthAttendance.includes(day)) {
-                attendanceData[monthIndex] = monthAttendance.filter(d => d !== day);
-            } else {
-                attendanceData[monthIndex].push(day);
+            if (!monthAttendance.includes(day)) {
+                monthAttendance.push(day); // 출석 추가
+                localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
+                updateAttendanceCount(monthIndex);
             }
-            localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
-            updateAttendanceCount(monthIndex);
         }
 
         function updateAttendanceCount(monthIndex) {

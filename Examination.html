@@ -17,7 +17,6 @@ header h1 {line-height: 120px; font-weight: bolder;}
 .number {width: 100%; height: 60px; display: flex; justify-content: center; align-items: center; padding-top: 45px;}
 .number p {font-size: 30px; font-weight: bolder; margin-left: 5px;}
 .number span {color: #888;}
-.number svg {margin-right: 5px; margin-bottom: 10px; padding: 7px; border: 2px solid green; border-radius: 5px; color: green;}
 .window {margin: 0 auto; width: 800px; height: 500px; overflow: hidden;}
 .en {margin: 0 auto; width: 800px; height: 500px; display: flex; transition: transform 0.5s;}
 .word {margin: 30px auto; width: 800px; height: 200px; background-color: beige; font-size: 60px; display: flex; align-items: center; justify-content: center;}
@@ -31,13 +30,10 @@ header h1 {line-height: 120px; font-weight: bolder;}
 
 <main>
     <header>
-        <h1>단어 시험 테스트 (Day 1)</h1>
+        <h1>단어 시험 테스트</h1>
     </header>
     <div class="content">
         <div class="number">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-quora" viewBox="0 0 16 16">
-                <path d="M8.73 12.476c-.554-1.091-1.204-2.193-2.473-2.193-.242 0-.484.04-.707.142l-.43-.863c.525-.45 1.373-.808 2.464-.808 1.697 0 2.568.818 3.26 1.86.41-.89.605-2.093.605-3.584 0-3.724-1.165-5.636-3.885-5.636-2.68 0-3.839 1.912-3.839 5.636 0 3.704 1.159 5.596 3.84 5.596.425 0 .811-.046 1.166-.15Zm.665 1.3a7 7 0 0 1-1.83.244C3.994 14.02.5 11.172.5 7.03.5 2.849 3.995 0 7.564 0c3.63 0 7.09 2.828 7.09 7.03 0 2.337-1.09 4.236-2.675 5.464.512.767 1.04 1.277 1.773 1.277.802 0 1.125-.62 1.179-1.105h1.043c.061.647-.262 3.334-3.178 3.334-1.767 0-2.7-1.024-3.4-2.224Z"/>
-            </svg>
             <p>1<span>/10</span></p>
         </div>
         <div class="window">
@@ -47,34 +43,38 @@ header h1 {line-height: 120px; font-weight: bolder;}
 </main>
 
 <script>
-    const data = [
-        {id: 1, word: "international", correct: "국제의, 국제적인", as1: "국제의, 국제적인", as2: "생략하다, 빼다", as3: "먹이, 희생자", as4: "정확한"},
-        {id: 2, word: "variable", correct: "변수", as1: "변수", as2: "만들다", as3: "요리", as4: "어려운"},
-        {id: 3, word: "align", correct: "정렬", as1: "생산하다", as2: "가운데", as3: "정렬", as4: "너비"},
-        {id: 4, word: "division", correct: "분할", as1: "채워넣는것", as2: "분할", as3: "가로", as4: "쉬운"},
-        {id: 5, word: "margin", correct: "여백", as1: "길이", as2: "빈 공간", as3: "거리", as4: "여백"},
-        {id: 6, word: "paragraph", correct: "단락", as1: "단락", as2: "문서", as3: "기능", as4: "코끼리"},
-        {id: 7, word: "document", correct: "문서", as1: "비행기", as2: "문서", as3: "휴지통", as4: "개인적인"},
-        {id: 8, word: "select", correct: "선택하다", as1: "투입", as2: "선택하다", as3: "공격하다", as4: "바퀴벌레"},
-        {id: 9, word: "sort", correct: "정렬", as1: "정렬", as2: "보고싶은", as3: "윤도연", as4: "멍청한"},
-        {id: 10, word: "input", correct: "투입", as1: "원필립", as2: "투입", as3: "누리봄", as4: "아쉬운"}
+    // 오늘의 학습 단어 목록
+    const learnedWords = JSON.parse(localStorage.getItem('learnedWords')) || [];
+
+    // 사용할 무작위 오답 목록
+    const wrongAnswers = [
+        "정확한", "먹이, 희생자", "어려운", "가운데", "채워넣다", 
+        "빈 공간", "기능", "비행기", "휴지통", "공격하다", 
+        "보고싶은", "소금", "알 수 없는", "고마운", "원하다", "걷어내다"
     ];
 
     let currentIndex = 0;
     let correctAnswers = 0;
 
+    function getRandomWrongAnswers(correctAnswer) {
+        // Correct answer을 제외한 무작위 오답 3개 선택
+        const filteredWrongAnswers = wrongAnswers.filter(answer => answer !== correctAnswer);
+        const shuffled = filteredWrongAnswers.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 3);
+    }
+
     function wordTest(products) {
         products.forEach(element => {
+            const wrongOptions = getRandomWrongAnswers(element.meaning);
+            const options = [element.meaning, ...wrongOptions].sort(() => Math.random() - 0.5); // 정답 + 오답을 랜덤하게 섞음
+
             const words = `
                 <div class="data">
                     <div class="word">
                         <p>${element.word}</p>
                     </div>
                     <ul class="bar">
-                        <li>${element.as1}</li>
-                        <li>${element.as2}</li>
-                        <li>${element.as3}</li>
-                        <li>${element.as4}</li>
+                        ${options.map(option => `<li>${option}</li>`).join('')}
                     </ul>
                 </div>
             `;
@@ -86,13 +86,13 @@ header h1 {line-height: 120px; font-weight: bolder;}
             bar.addEventListener("click", (event) => {
                 const target = event.target;
                 if (target.tagName === "LI") {
-                    const isCorrect = target.textContent === data[index].correct;
+                    const isCorrect = target.textContent === products[index].meaning;
                     target.classList.add(isCorrect ? "correct" : "incorrect");
 
                     if (isCorrect) correctAnswers++;
 
                     setTimeout(() => {
-                        if (index < data.length - 1) {
+                        if (index < products.length - 1) {
                             showNextQuestion(index + 1);
                         } else {
                             showSummary();
@@ -109,7 +109,7 @@ header h1 {line-height: 120px; font-weight: bolder;}
     }
 
     function showSummary() {
-        const totalQuestions = data.length;
+        const totalQuestions = learnedWords.length;
         const incorrectAnswers = totalQuestions - correctAnswers;
 
         let summary = `
@@ -117,13 +117,31 @@ header h1 {line-height: 120px; font-weight: bolder;}
                 <h2>결과 요약</h2>
                 <p>총 ${totalQuestions}문제 중 ${correctAnswers}문제를 맞히셨습니다.</p>
                 <p>${incorrectAnswers}문제를 틀리셨습니다.</p>
+                <button id="saveLogBtn">학습일지에 저장</button>
             </div>
         `;
 
         document.querySelector(".content").innerHTML = summary;
+
+        // 저장 버튼 클릭 시 학습일지에 기록 저장
+        document.getElementById('saveLogBtn').onclick = () => {
+            const logEntry = `시험 결과: 총 ${totalQuestions}문제 중 ${correctAnswers}문제를 맞혔습니다. ${incorrectAnswers}문제를 틀렸습니다.`;
+            saveLog(logEntry);
+            alert('학습일지에 기록이 저장되었습니다.');
+        };
     }
 
-    wordTest(data);
+    function saveLog(log) {
+        const logs = JSON.parse(localStorage.getItem('learningLogs')) || [];
+        logs.push(log);
+        localStorage.setItem('learningLogs', JSON.stringify(logs));
+    }
+
+    if (learnedWords.length > 0) {
+        wordTest(learnedWords);
+    } else {
+        document.querySelector(".content").innerHTML = `<div class="summary"><h2>학습한 단어가 없습니다.</h2></div>`;
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
