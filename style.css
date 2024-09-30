@@ -5,7 +5,7 @@
 
 header {
     display: flex;
-    width: 1440px;
+    width: 1423px;
     height: 70px;
     border-bottom: 1px solid black;
     text-align: center;
@@ -21,32 +21,26 @@ header {
 }
 
 .menu {
-    width: 480px;
+    width: 960px;
     height: 70px;
     display: flex;
     line-height: 70px;
 }
 
-.profile {
-    width: 480px;
-    height: 70px;
-    line-height: 70px;
-}
-
 .main {
-    width: 1440px;
+    width: 1423px;
     height: 500px;
     display: flex;
 }
 
 .mainleft {
-    width: 440px;
-    height: 700px;
+    width: 423px;
+    height: 650px;
     background-color: lightcoral;
 }
 
 .mainright {
     width: 1300px;
-    height: 700px;
+    height: 650px;
     background-color: lightblue;
 }

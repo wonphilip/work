@@ -125,7 +125,10 @@ header h1 {line-height: 120px; font-weight: bolder;}
 
         // 저장 버튼 클릭 시 학습일지에 기록 저장
         document.getElementById('saveLogBtn').onclick = () => {
-            const logEntry = `시험 결과: 총 ${totalQuestions}문제 중 ${correctAnswers}문제를 맞혔습니다. ${incorrectAnswers}문제를 틀렸습니다.`;
+            const logEntry = {
+                result: `시험 결과: 총 ${totalQuestions}문제 중 ${correctAnswers}문제를 맞혔습니다. ${incorrectAnswers}문제를 틀렸습니다.`,
+                time: new Date().toLocaleString() // 현재 시간을 저장
+            };
             saveLog(logEntry);
             alert('학습일지에 기록이 저장되었습니다.');
         };
@@ -133,6 +136,7 @@ header h1 {line-height: 120px; font-weight: bolder;}
 
     function saveLog(log) {
         const logs = JSON.parse(localStorage.getItem('learningLogs')) || [];
+        // 시간과 함께 로그 저장
         logs.push(log);
         localStorage.setItem('learningLogs', JSON.stringify(logs));
     }

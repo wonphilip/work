@@ -4,59 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>출석체크</title>
+    <!-- Google Fonts 추가 -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f7f7f7;
+            background-color: #f9fafb;
+            color: #333;
             text-align: center;
         }
         .container {
-            max-width: 1200px;
-            margin: 20px auto;
+            max-width: 900px;
+            margin: 40px auto;
             padding: 20px;
-        }
-        .month {
-            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
         .month h2 {
             background-color: #4CAF50;
             color: white;
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 12px 0;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-radius: 5px;
         }
         .days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 10px;
             padding: 10px;
         }
         .days div {
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
+            width: 45px;
+            height: 45px;
+            line-height: 45px;
             text-align: center;
             border-radius: 50%;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
+            background-color: #f1f3f5;
         }
         .days div.attended {
             background-color: #4CAF50;
             color: white;
         }
         .days div.today {
-            background-color: #87CEEB;
+            background-color: #1E90FF;
             color: white;
         }
         .days div.disabled {
+            background-color: #e0e0e0;
+            color: #888;
             cursor: not-allowed;
-            background-color: #ccc;
-            color: #777;
+        }
+        .days div.past-attended {
+            background-color: #8FBC8F;
+            color: white;
+        }
+        .days div:hover {
+            transform: scale(1.1);
         }
         .navigation {
-            margin-top: 20px;
+            margin-top: 30px;
         }
         .navigation button {
             margin: 0 10px;
@@ -66,15 +79,22 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, box-shadow 0.2s;
         }
         .navigation button:disabled {
             background-color: #aaa;
             cursor: not-allowed;
         }
+        .navigation button:hover:not(:disabled) {
+            background-color: #45a049;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
         #attendance-count {
             font-size: 18px;
-            margin-top: 10px;
+            margin-top: 20px;
             color: #4CAF50;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -112,14 +132,14 @@
         ];
 
         const today = new Date();
-        const currentMonth = today.getMonth(); // 현재 월 (0~11)
-        const currentDay = today.getDate(); // 현재 날짜 (1~31)
+        const currentMonth = today.getMonth();
+        const currentDay = today.getDate();
         let displayedMonth = currentMonth;
         let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || Array(12).fill(null).map(() => []);
 
         function createCalendar(monthIndex) {
             const container = document.getElementById('days-container');
-            container.innerHTML = ''; // 이전 달의 날짜 초기화
+            container.innerHTML = ''; // Clear previous month days
             const days = months[monthIndex].days;
             const monthAttendance = attendanceData[monthIndex];
 
@@ -128,15 +148,17 @@
                 dayElement.textContent = i;
 
                 if (monthAttendance.includes(i)) {
-                    dayElement.classList.add('attended');
+                    dayElement.classList.add(monthIndex === currentMonth ? 'attended' : 'past-attended');
                 }
 
                 if (monthIndex === currentMonth && i === currentDay) {
                     dayElement.classList.add('today');
-                    dayElement.addEventListener('click', function() {
-                        this.classList.add('attended');
-                        markAttendance(monthIndex, i);
-                    });
+                    if (!monthAttendance.includes(i)) {
+                        dayElement.addEventListener('click', function() {
+                            this.classList.add('attended');
+                            markAttendance(monthIndex, i);
+                        });
+                    }
                 } else if (monthIndex < currentMonth || (monthIndex === currentMonth && i < currentDay)) {
                     dayElement.classList.add('disabled');
                 } else {
@@ -153,7 +175,7 @@
         function markAttendance(monthIndex, day) {
             const monthAttendance = attendanceData[monthIndex];
             if (!monthAttendance.includes(day)) {
-                monthAttendance.push(day); // 출석 추가
+                monthAttendance.push(day);
                 localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
                 updateAttendanceCount(monthIndex);
             }

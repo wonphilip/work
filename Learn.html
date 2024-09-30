@@ -8,18 +8,28 @@
 </head>
 <body>
 <style>
-    body { text-align: center; }
-    #wordList { margin: 20px; }
-    #wordList li { margin: 5px; }
+    body { text-align: center; background-color: #f8f9fa; }
+    main { max-width: 600px; margin: 40px auto; padding: 20px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    #wordList { margin-top: 20px; list-style-type: none; padding: 0; }
+    #wordList li { margin-bottom: 10px; }
+    #wordInput, #meaningInput { margin-bottom: 10px; }
+    .card { text-align: left; }
+    .remove-btn { margin-left: 10px; }
 </style>
+
 <main>
-    <h1>단어 학습 페이지</h1>
-    <input type="text" id="wordInput" placeholder="영어 단어">
-    <input type="text" id="meaningInput" placeholder="단어 뜻">
-    <button id="addWordBtn">단어 추가</button>
-    <h2>오늘의 학습 단어</h2>
+    <h1 class="mb-4">단어 학습 페이지</h1>
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="wordInput" placeholder="영어 단어">
+        <input type="text" class="form-control" id="meaningInput" placeholder="단어 뜻">
+        <button id="addWordBtn" class="btn btn-primary">단어 추가</button>
+    </div>
+
+    <h2 class="mt-4 mb-4">오늘의 학습 단어</h2>
     <ul id="wordList"></ul>
-    <button id="startTestBtn">단어 시험 시작</button>
+
+    <button id="startTestBtn" class="btn btn-success mt-3">단어 시험 시작</button>
 </main>
 
 <script>
@@ -35,14 +45,27 @@
         wordList.innerHTML = '';
         learnedWords.forEach((word, index) => {
             const li = document.createElement('li');
-            li.textContent = `${word.word} - ${word.meaning} `;
+            li.classList.add('card', 'p-3', 'mb-3');
+            
+            const wordText = document.createElement('h5');
+            wordText.textContent = word.word;
+            wordText.classList.add('card-title');
+
+            const meaningText = document.createElement('p');
+            meaningText.textContent = word.meaning;
+            meaningText.classList.add('card-text');
+
             const removeBtn = document.createElement('button');
             removeBtn.textContent = '삭제';
+            removeBtn.classList.add('btn', 'btn-danger', 'remove-btn');
             removeBtn.onclick = () => {
                 learnedWords.splice(index, 1);
                 localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
                 updateWordList();
             };
+
+            li.appendChild(wordText);
+            li.appendChild(meaningText);
             li.appendChild(removeBtn);
             wordList.appendChild(li);
         });
@@ -70,6 +93,7 @@
 
     updateWordList();
 </script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
