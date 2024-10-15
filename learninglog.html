@@ -12,8 +12,8 @@
             padding-top: 50px;
         }
         main {
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 1200px;
+            margin: 0 auto; /* 좌우 대칭을 위해 auto 설정 */
             padding: 20px;
             background-color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -55,24 +55,10 @@
             transition: background-color 0.3s ease;
         }
         .page-link:hover {
-            background-color: lightblue;
+            background-color: white;
         }
         .page-link.active {
-            background-color: lightblue;
-        }
-        #clearLogBtn {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
-        #clearLogBtn:hover {
-            background-color: #c82333;
+            background-color: white;
         }
     </style>
 </head>
@@ -82,13 +68,11 @@
     <h1>학습일지</h1>
     <ul id="logList"></ul>
     <div id="pagination"></div>
-    <button id="clearLogBtn">학습일지 비우기</button>
 </main>
 
 <script>
     const logList = document.getElementById('logList');
     const pagination = document.getElementById('pagination');
-    const clearLogBtn = document.getElementById('clearLogBtn');
     const logsPerPage = 10; // 페이지당 표시할 로그 수
     let currentPage = 1; // 현재 페이지
 
@@ -130,11 +114,6 @@
             pagination.appendChild(pageLink);
         }
     }
-
-    clearLogBtn.onclick = () => {
-        localStorage.removeItem('learningLogs');
-        updateLogList();
-    };
 
     updateLogList(currentPage); // 첫 페이지 표시
 </script>

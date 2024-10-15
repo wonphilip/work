@@ -8,13 +8,61 @@
 </head>
 <body>
 <style>
-    body { text-align: center; background-color: #f8f9fa; }
-    main { max-width: 600px; margin: 40px auto; padding: 20px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-    #wordList { margin-top: 20px; list-style-type: none; padding: 0; }
-    #wordList li { margin-bottom: 10px; }
-    #wordInput, #meaningInput { margin-bottom: 10px; }
-    .card { text-align: left; }
-    .remove-btn { margin-left: 10px; }
+    body { 
+        text-align: center; 
+        background-color: #f8f9fa; 
+    }
+    main { 
+        max-width: 600px; 
+        margin: 20px auto; 
+        padding: 20px; 
+        background-color: #4CAF50; 
+        color: white; 
+        border-radius: 10px; 
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    }
+    #addWordBtn { 
+        width: 110px; 
+    }
+    #wordList { 
+        margin-top: 10px; 
+        list-style-type: none; 
+        padding: 0; 
+        display: flex; 
+        flex-direction: column;
+        align-items: center; /* 카드가 가운데 정렬되도록 설정 */
+    }
+    #wordList li { 
+        margin-bottom: 5px; 
+        padding: 0; /* 패딩 제거 */
+        width: 100%; /* 카드가 100% 차지하도록 수정 */
+        max-width: 600px; /* 카드의 최대 너비 지정 */
+    }
+    .card { 
+        display: flex; /* 카드 내부 요소들을 가로로 정렬 */
+        justify-content: space-between; /* 단어/뜻과 삭제 버튼 사이 공간을 띄움 */
+        align-items: center; /* 삭제 버튼이 카드의 높이에 맞춰 가운데 정렬되도록 함 */
+        padding: 10px 0; /* 위 아래 패딩은 유지, 좌우 패딩은 제거 */
+        margin: 0; /* 여백 제거 */
+        width: 100%; 
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 가벼운 그림자 추가 */
+    }
+    .word-container { 
+        flex-grow: 1; /* 단어와 뜻이 더 많은 공간을 차지하도록 설정 */
+        text-align: center; /* 단어와 뜻을 가운데 정렬 */
+    }
+    .remove-btn { 
+        margin-left: auto; /* 버튼을 오른쪽 끝으로 밀기 */
+        width: 50px; 
+        font-size: 12px; 
+    }
+    #startTestBtn { 
+        background-color: #4CAF50; 
+        margin-top: 10px; 
+    }
+    section { 
+        margin-top: 10px; /* "오늘의 학습 단어" 아래 여백 줄임 */
+    }
 </style>
 
 <main>
@@ -25,12 +73,14 @@
         <input type="text" class="form-control" id="meaningInput" placeholder="단어 뜻">
         <button id="addWordBtn" class="btn btn-primary">단어 추가</button>
     </div>
+</main>
 
+<section>
     <h2 class="mt-4 mb-4">오늘의 학습 단어</h2>
     <ul id="wordList"></ul>
 
-    <button id="startTestBtn" class="btn btn-success mt-3">단어 시험 시작</button>
-</main>
+    <button id="startTestBtn" class="btn btn-success">단어 시험 시작</button>
+</section>
 
 <script>
     const wordList = document.getElementById('wordList');
@@ -45,15 +95,19 @@
         wordList.innerHTML = '';
         learnedWords.forEach((word, index) => {
             const li = document.createElement('li');
-            li.classList.add('card', 'p-3', 'mb-3');
-            
+            li.classList.add('card', 'p-2', 'mb-2'); 
+
+            const wordContainer = document.createElement('div');
+            wordContainer.classList.add('word-container');
+
             const wordText = document.createElement('h5');
             wordText.textContent = word.word;
-            wordText.classList.add('card-title');
 
             const meaningText = document.createElement('p');
             meaningText.textContent = word.meaning;
-            meaningText.classList.add('card-text');
+
+            wordContainer.appendChild(wordText);
+            wordContainer.appendChild(meaningText);
 
             const removeBtn = document.createElement('button');
             removeBtn.textContent = '삭제';
@@ -64,8 +118,7 @@
                 updateWordList();
             };
 
-            li.appendChild(wordText);
-            li.appendChild(meaningText);
+            li.appendChild(wordContainer);
             li.appendChild(removeBtn);
             wordList.appendChild(li);
         });
@@ -80,6 +133,8 @@
             updateWordList();
             wordInput.value = '';
             meaningInput.value = '';
+        } else {
+            alert('단어와 뜻을 입력해주세요.');
         }
     };
 
