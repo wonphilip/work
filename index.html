@@ -29,7 +29,7 @@
         }
 
         li {
-            color: black
+            color: black;
         }
 
         .logo {
@@ -79,8 +79,11 @@
         }
 
         .mainleft h2 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
+            text-align: center;
+            font-size: 2.0em;
+            font-weight: bold;
+            margin-top: 10px;
+
         }
 
         .mainleft ul {
@@ -110,13 +113,51 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
         }
 
-        .mainright img {
+        .mainright audio {
             width: 100%;
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
+            max-width: 600px;
+        }
+
+        .audio-title {
+            text-align: center;
+            font-size: 2.0em;
+            font-weight: bold;
+            margin-top: 10px;
+
+        }
+
+        .alphabet {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .letter {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 2em;
+            margin: 10px;
+            padding: 20px;
+            width: 30px; /* 일정한 너비 추가 */
+            height: 30px; /* 일정한 높이 추가 */
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex; /* 중앙 정렬을 위해 flexbox 사용 */
+            justify-content: center; /* 가로 중앙 정렬 */
+            align-items: center; /* 세로 중앙 정렬 */
+        }
+
+        .letter:hover {
+            background-color: green;
+        }
+
+        audio {
+            display: none;
         }
     </style>
 </head>
@@ -171,8 +212,50 @@
             </ul>
         </div>
         <div class="mainright">
-            <img src="알파벳.png" alt="알파벳 이미지">
+            <div class="audio-title">Alphabet</div>
+            <div class="alphabet">
+                <div class="letter" onclick="playSound('sound/A.mp4')">A</div>
+                <div class="letter" onclick="playSound('sound/B.mp4')">B</div>
+                <div class="letter" onclick="playSound('sound/C.mp4')">C</div>
+                <div class="letter" onclick="playSound('sound/D.mp4')">D</div>
+                <div class="letter" onclick="playSound('sound/E.mp4')">E</div>
+                <div class="letter" onclick="playSound('sound/F.mp4')">F</div>
+                <div class="letter" onclick="playSound('sound/G.mp4')">G</div>
+                <div class="letter" onclick="playSound('sound/H.mp4')">H</div>
+                <div class="letter" onclick="playSound('sound/I.mp4')">I</div>
+                <div class="letter" onclick="playSound('sound/J.mp4')">J</div>
+                <div class="letter" onclick="playSound('sound/K.mp4')">K</div>
+                <div class="letter" onclick="playSound('sound/L.mp4')">L</div>
+                <div class="letter" onclick="playSound('sound/M.mp4')">M</div>
+                <div class="letter" onclick="playSound('sound/N.mp4')">N</div>
+                <div class="letter" onclick="playSound('sound/O.mp4')">O</div>
+                <div class="letter" onclick="playSound('sound/P.mp4')">P</div>
+                <div class="letter" onclick="playSound('sound/Q.mp4')">Q</div>
+                <div class="letter" onclick="playSound('sound/R.mp4')">R</div>
+                <div class="letter" onclick="playSound('sound/S.mp4')">S</div>
+                <div class="letter" onclick="playSound('sound/T.mp4')">T</div>
+                <div class="letter" onclick="playSound('sound/U.mp4')">U</div>
+                <div class="letter" onclick="playSound('sound/V.mp4')">V</div>
+                <div class="letter" onclick="playSound('sound/W.mp4')">W</div>
+                <div class="letter" onclick="playSound('sound/X.mp4')">X</div>
+                <div class="letter" onclick="playSound('sound/Y.mp4')">Y</div>
+                <div class="letter" onclick="playSound('sound/Z.mp4')">Z</div>
+            </div>
+            <audio id="audio" controls>
+                <source id="audioSource" src="" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
         </div>
     </div>
+
+    <script>
+        function playSound(file) {
+            const audio = document.getElementById('audio');
+            const audioSource = document.getElementById('audioSource');
+            audioSource.src = file;
+            audio.load();
+            audio.play();
+        }
+    </script>
 </body>
 </html>
