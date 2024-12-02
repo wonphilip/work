@@ -58,7 +58,7 @@
         }
 
         .menu div:hover {
-            background-color: green;
+            background-color: #2b2f3a;
         }
 
         /* 메인 레이아웃 */
@@ -142,14 +142,14 @@
             font-size: 2em;
             margin: 10px;
             padding: 20px;
-            width: 30px; /* 일정한 너비 추가 */
-            height: 30px; /* 일정한 높이 추가 */
+            width: 30px;
+            height: 30px;
             border-radius: 8px;
             cursor: pointer;
             transition: 0.3s;
-            display: flex; /* 중앙 정렬을 위해 flexbox 사용 */
-            justify-content: center; /* 가로 중앙 정렬 */
-            align-items: center; /* 세로 중앙 정렬 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .letter:hover {
@@ -178,82 +178,47 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                         <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                    </svg>&nbsp;학습
+                    </svg>&nbsp;시험보기
                 </div>
             </a>
             <a href="check.html">
                 <div class="menu3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-check" viewBox="0 0 16 16">
                         <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
-                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
                     </svg>&nbsp;출석체크
-                </div>
-            </a>
-            <a href="Learn.html">
-                <div class="menu4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
-                        <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
-                        <path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0"/>
-                    </svg>&nbsp;오늘의학습
                 </div>
             </a>
         </div>
     </header>
-
-    <!-- 메인 콘텐츠 영역 -->
     <div class="main">
         <div class="mainleft">
-            <h2>메뉴</h2>
+            <h2>카테고리</h2>
             <ul>
-                <a href="learninglog.html"><li>학습일지 보기</li></a>
-                <a href="Examination.html"><li>학습</li></a>
-                <a href="check.html"><li>출석체크</li></a>
-                <a href="Learn.html"><li>오늘의 학습</li></a>
+                <li>기초</li>
+                <li>중급</li>
+                <li>고급</li>
             </ul>
         </div>
         <div class="mainright">
-            <div class="audio-title">Alphabet</div>
+            <div class="audio-title">Choose a letter to play sound:</div>
             <div class="alphabet">
-                <div class="letter" onclick="playSound('sound/A.mp4')">A</div>
-                <div class="letter" onclick="playSound('sound/B.mp4')">B</div>
-                <div class="letter" onclick="playSound('sound/C.mp4')">C</div>
-                <div class="letter" onclick="playSound('sound/D.mp4')">D</div>
-                <div class="letter" onclick="playSound('sound/E.mp4')">E</div>
-                <div class="letter" onclick="playSound('sound/F.mp4')">F</div>
-                <div class="letter" onclick="playSound('sound/G.mp4')">G</div>
-                <div class="letter" onclick="playSound('sound/H.mp4')">H</div>
-                <div class="letter" onclick="playSound('sound/I.mp4')">I</div>
-                <div class="letter" onclick="playSound('sound/J.mp4')">J</div>
-                <div class="letter" onclick="playSound('sound/K.mp4')">K</div>
-                <div class="letter" onclick="playSound('sound/L.mp4')">L</div>
-                <div class="letter" onclick="playSound('sound/M.mp4')">M</div>
-                <div class="letter" onclick="playSound('sound/N.mp4')">N</div>
-                <div class="letter" onclick="playSound('sound/O.mp4')">O</div>
-                <div class="letter" onclick="playSound('sound/P.mp4')">P</div>
-                <div class="letter" onclick="playSound('sound/Q.mp4')">Q</div>
-                <div class="letter" onclick="playSound('sound/R.mp4')">R</div>
-                <div class="letter" onclick="playSound('sound/S.mp4')">S</div>
-                <div class="letter" onclick="playSound('sound/T.mp4')">T</div>
-                <div class="letter" onclick="playSound('sound/U.mp4')">U</div>
-                <div class="letter" onclick="playSound('sound/V.mp4')">V</div>
-                <div class="letter" onclick="playSound('sound/W.mp4')">W</div>
-                <div class="letter" onclick="playSound('sound/X.mp4')">X</div>
-                <div class="letter" onclick="playSound('sound/Y.mp4')">Y</div>
-                <div class="letter" onclick="playSound('sound/Z.mp4')">Z</div>
+                <!-- 알파벳 버튼 생성 -->
+                <div class="letter" onclick="playSound('A')">A</div>
+                <div class="letter" onclick="playSound('B')">B</div>
+                <div class="letter" onclick="playSound('C')">C</div>
+                <!-- 나머지 알파벳들도 동일하게 추가 -->
+                <!-- ... -->
+                <div class="letter" onclick="playSound('Z')">Z</div>
             </div>
-            <audio id="audio" controls>
-                <source id="audioSource" src="" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
+            <audio id="audio-player"></audio>
         </div>
     </div>
-
     <script>
-        function playSound(file) {
-            const audio = document.getElementById('audio');
-            const audioSource = document.getElementById('audioSource');
-            audioSource.src = file;
-            audio.load();
+        // 알파벳 버튼 클릭 시 소리 재생
+        function playSound(letter) {
+            const audio = document.getElementById('audio-player');
+            audio.src = `sounds/${letter}.mp3`;  // 각 알파벳에 맞는 mp3 파일이 sounds 폴더에 저장되어 있어야 함
             audio.play();
         }
     </script>

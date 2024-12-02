@@ -1,0 +1,105 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>랜덤 숫자 추첨기</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f3f4f6;
+    }
+    .container {
+      text-align: center;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      width: 100%;
+    }
+    .title {
+      font-size: 1.5em;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .result {
+      font-size: 1.4em;
+      color: #28a745;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .draw-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 1em;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 15px;
+    }
+    .draw-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+    <html>
+    <head>
+        <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    </head>
+    <body>
+        <py-script>
+            # server.py
+            from flask import Flask, render_template, jsonify
+            import random
+
+            app = Flask(__name__)
+
+            @app.route("/")
+            def index():
+                return render_template("index.html")
+
+            @app.route("/draw", methods=["GET"])
+            def draw_random_number():
+                random_number = random.randint(1, 100)  # 1에서 100 사이의 랜덤 숫자 생성
+                return jsonify({"number": random_number})  # JSON 형식으로 반환
+
+            if __name__ == "__main__":
+                app.run(debug=True)
+
+        </py-script>
+    </body>
+</html>
+  <div class="container">
+    <div class="title">랜덤 숫자 추첨기</div>
+    <button class="draw-button" onclick="drawRandomNumber()">추첨하기</button>
+    <div class="result" id="result">랜덤 숫자: ???</div>
+  </div>
+
+  <script>
+    async function drawRandomNumber() {
+      try {
+        const response = await fetch('/draw');  // Flask 서버에 요청
+        const data = await response.json();     // JSON 응답 파싱
+        document.getElementById("result").textContent = `랜덤 숫자: ${data.number}`;  // 숫자 표시
+      } catch (error) {
+        console.error("추첨 오류:", error);
+        document.getElementById("result").textContent = "오류가 발생했습니다.";
+      }
+    }
+  </script>
+</body>
+</html>
