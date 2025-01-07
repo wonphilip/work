@@ -1,0 +1,18 @@
+header {
+    display: flex;
+    justify-content: center;
+}
+
+.logo {
+    display: left;
+}
+
+.menu {
+    display: flex;
+
+}
+
+.menu div {
+    display: flex;
+
+}
